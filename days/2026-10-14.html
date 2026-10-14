@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10-14 ready_list 순서</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="../assets/devlog.css">
+</head>
+<body>
+<main class="wrap" id="card"></main>
+<script type="application/json" id="day">
+{
+  "kind": "bug",
+  "date": "2026-10-14",
+  "project": "PintOS threads",
+  "title": "priority 는 바뀌었는데 ready_list 순서는 그대로",
+  "output": [
+    { "st": "pass", "text": "tests/threads/mlfqs/mlfqs-load-1" },
+    { "st": "pass", "text": "tests/threads/mlfqs/mlfqs-load-60" },
+    { "st": "FAIL", "text": "tests/threads/mlfqs/mlfqs-load-avg", "bad": true, "fixed": "pass" },
+    { "st": "pass", "text": "tests/threads/mlfqs/mlfqs-recent-1" },
+    { "st": "pass", "text": "tests/threads/mlfqs/mlfqs-block" }
+  ],
+  "tally": { "before": "1 of 27 tests failed.", "after": "All 27 tests passed." },
+  "token": "mlfqs-load-avg",
+  "location": "thread.c · ready_list",
+  "before": "넣을 때 정렬",
+  "after": "priority 재계산 뒤 다시 정렬",
+  "captions": {
+    "symptom": "recent_cpu · priority 를 넣은 뒤부터 mlfqs-load-avg 하나만 실패해요.",
+    "cause": "priority 는 4틱마다 다시 계산되는데, ready_list 는 넣을 때 정렬한 순서 그대로였어요.",
+    "fix": "재계산한 뒤 ready_list 를 다시 정렬했어요. 27개 모두 통과해요."
+  },
+  "footnote": "출력 줄은 make check 결과 중 MLFQS 일부만 골라 보여 줘요."
+}
+</script>
+<script src="../assets/devlog.js"></script>
+</body>
+</html>

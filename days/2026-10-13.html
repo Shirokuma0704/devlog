@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10-13 MLFQS 전체 실행</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="../assets/devlog.css">
+</head>
+<body>
+<main class="wrap" id="card"></main>
+<script type="application/json" id="day">
+{
+  "kind": "numbers",
+  "date": "2026-10-13",
+  "project": "PintOS threads",
+  "title": "MLFQS 전체 실행 23 → 26, 대신 load-avg 가 새로 실패",
+  "unit": "PASS",
+  "tests": [
+    "alarm-single", "alarm-multiple", "alarm-simultaneous", "alarm-priority", "alarm-zero", "alarm-negative",
+    "priority-change", "priority-donate-one", "priority-donate-multiple", "priority-donate-multiple2",
+    "priority-donate-nest", "priority-donate-sema", "priority-donate-lower", "priority-fifo",
+    "priority-preempt", "priority-sema", "priority-condvar", "priority-donate-chain",
+    "mlfqs-load-1", "mlfqs-load-60", "mlfqs-load-avg", "mlfqs-recent-1", "mlfqs-fair-2",
+    "mlfqs-fair-20", "mlfqs-nice-2", "mlfqs-nice-10", "mlfqs-block"
+  ],
+  "groups": ["alarm · priority 18", "mlfqs 9"],
+  "steps": [
+    {
+      "label": "MLFQS 첫 전체 실행",
+      "fail": ["mlfqs-recent-1", "mlfqs-nice-2", "mlfqs-nice-10", "mlfqs-block"],
+      "note": "load_avg 를 넣고 처음 전체를 돌렸어요. MLFQS 9개 중 4개가 실패해요."
+    },
+    {
+      "label": "recent_cpu · priority 넣은 뒤",
+      "fail": ["mlfqs-load-avg"],
+      "note": "실패하던 4개는 통과했는데, 앞에서 통과하던 load-avg 가 실패로 바뀌었어요."
+    }
+  ]
+}
+</script>
+<script src="../assets/devlog.js"></script>
+</body>
+</html>
